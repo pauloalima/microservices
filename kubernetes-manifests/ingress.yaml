@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - ingress.tranbics.net
+    secretName: ingress-tranbics-tls
+  rules:
+  - host: ingress.tranbics.net
+    http:
+      paths:
+      - path: /microservices
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
